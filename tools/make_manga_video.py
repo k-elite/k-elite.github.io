@@ -27,6 +27,8 @@ import sys
 import imageio_ffmpeg
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
+import manga_anim
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 SRC = os.path.join(HERE, "manga", "elite3.png")
@@ -196,9 +198,8 @@ class Stage:
             return im
         return Image.blend(im, self.bg, (p - start) / (1 - start))
 
-    def panel(self, im, idx, cx, cy, base_w, p):
+    def panel(self, im, src, cx, cy, base_w, p):
         """컷 하나를 얹는다. 1.0 → 1.07 로 아주 천천히 당긴다."""
-        src = PANELS[idx]
         zoom = lerp(1.0, 1.07, ease_in_out(p))
         pw = int(base_w * zoom)
         ph = int(src.height * pw / src.width)
@@ -257,7 +258,8 @@ def v_panel(idx):
         text(d, (72, 228), TITLES[idx], font(54), INK, "la", a)
 
         cy = 880 + int(lerp(14, -14, ease_in_out(p)))
-        ph = VERT.panel(im, idx, VERT.w // 2, cy, VERT.w - 96, p)
+        art = manga_anim.animate(PANELS[idx], idx, t)
+        ph = VERT.panel(im, art, VERT.w // 2, cy, VERT.w - 96, p)
         d = ImageDraw.Draw(im, "RGBA")
 
         nf = font(34, False)
@@ -325,10 +327,10 @@ def w_panel(idx):
         p = clamp01(t / dur)
 
         # 컷은 왼쪽. 화면 높이에 맞춰 채운다.
-        src = PANELS[idx]
+        art = manga_anim.animate(PANELS[idx], idx, t)
         panel_h = 830
-        base_w = int(src.width * panel_h / src.height)
-        WIDE.panel(im, idx, 496, WIDE.h // 2 - 6, base_w, p)
+        base_w = int(art.width * panel_h / art.height)
+        WIDE.panel(im, art, 496, WIDE.h // 2 - 6, base_w, p)
         d = ImageDraw.Draw(im, "RGBA")
 
         # 오른쪽은 글. 칸 폭을 넘기지 않게 줄을 나눈다.
