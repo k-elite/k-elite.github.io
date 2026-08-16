@@ -60,11 +60,11 @@ def acwr_chart():
         return y1 - (y1 - y0) * (v - lo) / (hi - lo)
 
     band = (f'<rect x="{x0}" y="{Y(1.3):.1f}" width="{x1-x0}" '
-            f'height="{Y(0.8)-Y(1.3):.1f}" fill="var(--safe)" opacity=".10"/>'
+            f'height="{Y(0.8)-Y(1.3):.1f}" fill="var(--safe)" opacity=".17"/>'
             f'<rect x="{x0}" y="{Y(1.5):.1f}" width="{x1-x0}" '
-            f'height="{Y(1.3)-Y(1.5):.1f}" fill="var(--watch)" opacity=".12"/>'
+            f'height="{Y(1.3)-Y(1.5):.1f}" fill="var(--watch)" opacity=".19"/>'
             f'<rect x="{x0}" y="{y0}" width="{x1-x0}" '
-            f'height="{Y(1.5)-y0:.1f}" fill="var(--risk)" opacity=".13"/>')
+            f'height="{Y(1.5)-y0:.1f}" fill="var(--risk)" opacity=".20"/>')
 
     pts = " ".join(f"{X(i):.1f},{Y(v):.1f}" for i, v in enumerate(vals))
     dots = "".join(
@@ -632,16 +632,15 @@ HTML = f"""<title>엘리트 루틴 케어</title>
 </section>
 
 <!-- ── 마무리 ────────────────────────────────────────── -->
-<section class="pad" style="text-align:center">
-  <div class="beam" style="opacity:.55"></div>
+<section class="pad finale" style="text-align:center">
   <div class="wrap stack g24" style="align-items:center">
     <h2 class="reveal" style="max-width:20ch">오늘의 루틴이<br>3년 뒤의 기록이 됩니다</h2>
     <p class="lead reveal" style="max-width:52ch">
       월 9,900원. 선수 한 명을 관리하고, 보호자 연결은 추가 비용 없이 됩니다.
     </p>
     <div class="cta-row reveal" style="justify-content:center">
-      <a class="btn btn-primary" href="https://eliteroutine.github.io/beginner_guide.html">초보자 설명서</a>
-      <a class="btn btn-ghost" href="https://eliteroutine.github.io/parent_guide.html">학부모 안내서</a>
+      <a class="btn btn-primary" href="https://eliteroutine.github.io/beginner_guide.html">초보자 설명서 보기</a>
+      <a class="btn btn-ghost" href="https://eliteroutine.github.io/parent_guide.html">학부모 안내서 보기</a>
     </div>
   </div>
 </section>
