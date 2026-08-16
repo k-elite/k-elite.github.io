@@ -27,7 +27,7 @@ CSS += """
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 SP = HERE
-VIDEO = ""  # 개인정보 마스킹 전까지 영상 비활성
+VIDEO = io.open(os.path.join(SP, "video_b64.txt"), encoding="utf-8").read().strip()
 IDX = json.load(io.open(os.path.join(SP, "shots_web", "index.json"),
                         encoding="utf-8"))
 
@@ -389,6 +389,33 @@ HTML = f"""<title>엘리트 루틴 케어</title>
     <div class="metric"><div class="n" data-count="3">0<small>분</small></div><div class="l">하루 사용 설계</div></div>
     <div class="metric"><div class="n" data-count="4">0<small>주</small></div><div class="l">부하 비교 기준</div></div>
     <div class="metric"><div class="n" data-count="0">0</div><div class="l">게임이 올리는 등급</div></div>
+  </div>
+</section>
+
+<!-- ── 영상 ──────────────────────────────────────────── -->
+<section class="pad" id="film" style="background:var(--ground-2);border-block:1px solid var(--rule)">
+  <div class="wrap filmwrap">
+    <div class="film reveal">
+      <video controls playsinline preload="metadata"
+             aria-label="엘리트 루틴 케어 소개 영상">
+        <source src="{VIDEO}" type="video/mp4">
+        영상을 재생할 수 없는 환경입니다.
+      </video>
+    </div>
+    <div class="stack g16">
+      <p class="eyebrow reveal">78초 소개</p>
+      <h2 class="reveal">기능을 순서대로 보여 드립니다</h2>
+      <p class="lead reveal">
+        만든 이유부터 훈련 부하, 투구 수, 성장 기록, 회복일, 진학 실적표,
+        AI 코치, 학부모 화면, 지도자 평가, 주간 리포트까지.
+        나오는 화면은 전부 <b style="color:var(--ink)">실제 앱</b>입니다.
+      </p>
+      <div class="film-cta reveal">
+        <span class="badge">1080 × 1920</span>
+        <span class="badge">세로 · 쇼츠 규격</span>
+        <span class="badge">17개 장면</span>
+      </div>
+    </div>
   </div>
 </section>
 
