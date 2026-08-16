@@ -364,7 +364,7 @@ def scene_growth(t, dur):
 def scene_portfolio(t, dur):
     """진학 실적표 — 실제 미리보기 화면."""
     im, d = new_frame()
-    head(d, t, "04", "3년 치 기록이", "A4 한 장으로",
+    head(d, t, "05", "3년 치 기록이", "A4 한 장으로",
          "대회가 끝나면 30초. 진학 때 버튼 하나로 뽑습니다.")
     k = ease_out(clamp01((t - .5) / 1.1))
     phone(im, "16_portfolio_pdf", W // 2, int(lerp(1300, 1180, k)),
@@ -378,7 +378,7 @@ def scene_portfolio(t, dur):
 def scene_parent(t, dur):
     """학부모 화면 — 하루 1분."""
     im, d = new_frame()
-    head(d, t, "05", "잔소리 대신", "하루 1분 확인",
+    head(d, t, "09", "잔소리 대신", "하루 1분 확인",
          "오늘 훈련했는지, 어디가 아픈지 한 화면에.")
     k = ease_out(clamp01((t - .5) / 1.1))
     phone(im, "30_parent_today", W // 2, int(lerp(1300, 1180, k)), 820)
@@ -407,15 +407,268 @@ def scene_end(t, dur):
     return fade_out(im, clamp01(t / dur), .88)
 
 
+
+def scene_recovery(t, dur):
+    """회복일 — 쉬어도 연속 기록이 끊기지 않는다."""
+    im, d = new_frame()
+    head(d, t, "04", "쉬어도", "끊기지 않습니다",
+         "회복일을 쓰면 연속 기록이 그대로 이어집니다")
+
+    # 한 주. 수요일에 회복일을 썼는데도 5일 목표를 채웠다.
+    days = [("월", "done"), ("화", "done"), ("수", "rest"), ("목", "done"),
+            ("금", "done"), ("토", "done"), ("일", "todo")]
+    bw, gap = 118, 22
+    total = len(days) * bw + (len(days) - 1) * gap
+    x, y = (W - total) // 2, 900
+    for i, (label, st) in enumerate(days):
+        k = ease_out(clamp01((t - .6 - i * .11) / .5))
+        if k <= 0:
+            continue
+        bx = x + i * (bw + gap)
+        s = lerp(.7, 1.0, k)
+        pad = bw * (1 - s) / 2
+        fill = {"done": BEAM, "rest": WATCH, "todo": PANEL}[st]
+        d.rounded_rectangle([bx + pad, y + pad, bx + bw - pad, y + bw - pad],
+                            radius=int(30 * s), fill=fill + (int(255 * k),))
+        mark = {"done": "✓", "rest": "휴", "todo": ""}[st]
+        if mark:
+            text(d, (bx + bw / 2, y + bw / 2), mark, F_MID, INK, "mm",
+                 int(255 * k))
+        text(d, (bx + bw / 2, y + bw + 46), label, F_TINY, INK3, "ma",
+             int(255 * k))
+
+    a = int(255 * ease_out(clamp01((t - 2.1) / .6)))
+    if a > 0:
+        d.rounded_rectangle([120, 1210, W - 120, 1340], radius=24,
+                            fill=PANEL + (a,), outline=WATCH + (a,), width=3)
+        text(d, (W // 2, 1252), "수요일에 쉬고도 주간 목표 달성", F_SMALL,
+             WATCH, "ma", a)
+        text(d, (W // 2, 1300), "회복일도 채운 날로 셉니다", F_TINY, INK2, "ma", a)
+
+    text(d, (W // 2, 1470), "기록 때문에 아파도 참는 일을", F_BODY, INK, "ma",
+         int(255 * ease_out(clamp01((t - 2.8) / .6))))
+    text(d, (W // 2, 1536), "막으려고 넣은 장치입니다", F_BODY, INK, "ma",
+         int(255 * ease_out(clamp01((t - 3.0) / .6))))
+    return fade_out(im, clamp01(t / dur), .92)
+
+
+def scene_card(t, dur):
+    """대회 결과 카드 — 저장하면 바로 만들어진다."""
+    im, d = new_frame()
+    head(d, t, "06", "대회가 끝나면", "카드 한 장",
+         "저장하는 순간 만들어집니다. 카톡으로 바로.")
+    k = ease_out(clamp01((t - .5) / 1.1))
+    phone(im, "21_result_card", W // 2, int(lerp(1300, 1180, k)), 820)
+    d = ImageDraw.Draw(im, "RGBA")
+    text(d, (W // 2, 1700), "개인 최고를 갈아치웠으면 그것도 카드에 찍힙니다",
+         F_SMALL, INK2, "ma", int(255 * ease_out(clamp01((t - 2.2) / .6))))
+    return fade_out(im, clamp01(t / dur), .92)
+
+
+def scene_coach(t, dur):
+    """AI 코치 — 종목을 알고 답한다."""
+    im, d = new_frame()
+    head(d, t, "07", "종목을 알고", "답합니다",
+         "야구 투수에게는 어깨를, 수영 선수에게는 기록을.")
+    k = ease_out(clamp01((t - .5) / 1.1))
+    phone(im, "08_aicoach", W // 2, int(lerp(1300, 1180, k)), 820)
+    d = ImageDraw.Draw(im, "RGBA")
+    text(d, (W // 2, 1700), "통증을 이야기하면 휴식과 진료를 먼저 권합니다",
+         F_SMALL, INK2, "ma", int(255 * ease_out(clamp01((t - 2.2) / .6))))
+    return fade_out(im, clamp01(t / dur), .92)
+
+
+def scene_calendar(t, dur):
+    """캘린더와 일지 — 며칠 했는지 한눈에."""
+    im, d = new_frame()
+    head(d, t, "08", "며칠 했는지", "한눈에",
+         "날짜를 누르면 그날 기록이 나옵니다.")
+    k = ease_out(clamp01((t - .5) / 1.1))
+    phone(im, "06_calendar", W // 2, int(lerp(1300, 1180, k)), 820)
+    d = ImageDraw.Draw(im, "RGBA")
+    text(d, (W // 2, 1700), "일지는 말로 받아쓰기도 됩니다", F_SMALL, INK2,
+         "ma", int(255 * ease_out(clamp01((t - 2.2) / .6))))
+    return fade_out(im, clamp01(t / dur), .92)
+
+
+def scene_evaluation(t, dur):
+    """지도자 평가 — 실력이 늘었는지는 감독만 안다."""
+    im, d = new_frame()
+    head(d, t, "10", "실력이 늘었는지는", "감독님만 압니다",
+         "종목별 역량을 점수로 남기면 시즌 추이가 보입니다")
+    k = ease_out(clamp01((t - .5) / 1.1))
+    phone(im, "32_parent_growth", W // 2, int(lerp(1280, 1160, k)), 760)
+    d = ImageDraw.Draw(im, "RGBA")
+    a = int(255 * ease_out(clamp01((t - 2.2) / .6)))
+    if a > 0:
+        d.rounded_rectangle([110, 1620, W - 110, 1756], radius=24,
+                            fill=PANEL + (a,), outline=SAFE + (a,), width=3)
+        text(d, (W // 2, 1662), "실적표에 넣을지는 본인과 보호자가 정합니다",
+             F_SMALL, SAFE, "ma", a)
+        text(d, (W // 2, 1712), "감독 화면에는 이 스위치가 없습니다", F_TINY,
+             INK2, "ma", a)
+    return fade_out(im, clamp01(t / dur), .92)
+
+
+def scene_report(t, dur):
+    """주간 AI 리포트."""
+    im, d = new_frame()
+    head(d, t, "11", "한 주를 문서", "한 장으로",
+         "AI가 훈련·컨디션을 스카우팅 리포트 형식으로 정리합니다")
+    k = ease_out(clamp01((t - .5) / 1.1))
+    phone(im, "19_report_detail", W // 2, int(lerp(1300, 1180, k)), 820)
+    d = ImageDraw.Draw(im, "RGBA")
+    text(d, (W // 2, 1700), "몇 주 쌓이면 그 자체가 자료가 됩니다", F_SMALL,
+         INK2, "ma", int(255 * ease_out(clamp01((t - 2.2) / .6))))
+    return fade_out(im, clamp01(t / dur), .92)
+
+
+def scene_economy(t, dur):
+    """게임이 훈련과 경쟁하지 않는 구조."""
+    im, d = new_frame()
+    head(d, t, "12", "게임은 훈련과", "경쟁하지 않습니다",
+         "부모님이 가장 걱정하는 부분이라 구조를 공개합니다")
+
+    bx, by, bw, bh = 70, 820, 400, 330
+    k1 = ease_out(clamp01((t - .6) / .6))
+    if k1 > 0:
+        a = int(255 * k1)
+        d.rounded_rectangle([bx, by, bx + bw, by + bh], radius=28,
+                            fill=PANEL + (a,), outline=BEAM + (a,), width=4)
+        text(d, (bx + 34, by + 40), "훈련으로만", F_TINY, BEAM2, "la", a)
+        text(d, (bx + 34, by + 88), "불꽃 포인트", F_MID, INK, "la", a)
+        text(d, (bx + 34, by + 172), "루틴 · 일지 · 측정", F_SMALL, INK2, "la", a)
+        d.rounded_rectangle([bx + 34, by + 228, bx + bw - 34, by + 294],
+                            radius=16, fill=SAFE + (int(46 * k1),))
+        text(d, (bx + bw / 2, by + 246), "등급에 반영", F_SMALL, SAFE, "ma", a)
+
+    # 한 방향 화살표 — 훈련이 게임을 열어 주지, 그 반대는 없다.
+    k2 = ease_out(clamp01((t - 1.2) / .6))
+    if k2 > 0:
+        ax0 = bx + bw + 24
+        ax1 = ax0 + int(96 * k2)
+        d.line([(ax0, by + bh / 2), (ax1, by + bh / 2)], fill=WATCH, width=8)
+        if k2 > .8:
+            d.polygon([(ax1, by + bh / 2 - 22), (ax1 + 34, by + bh / 2),
+                       (ax1, by + bh / 2 + 22)], fill=WATCH)
+        text(d, ((ax0 + ax1) / 2, by + bh / 2 - 64), "입장권", F_TINY, WATCH,
+             "ma", int(255 * k2))
+
+    k3 = ease_out(clamp01((t - 1.7) / .6))
+    if k3 > 0:
+        a = int(255 * k3)
+        gx = bx + bw + 170
+        d.rounded_rectangle([gx, by, gx + bw, by + bh], radius=28,
+                            fill=PANEL + (a,), outline=WATCH + (a,), width=4)
+        text(d, (gx + 34, by + 40), "게임으로만", F_TINY, WATCH, "la", a)
+        text(d, (gx + 34, by + 88), "게임 코인", F_MID, INK, "la", a)
+        text(d, (gx + 34, by + 172), "꾸미기에만", F_SMALL, INK2, "la", a)
+        d.rounded_rectangle([gx + 34, by + 228, gx + bw - 34, by + 294],
+                            radius=16, fill=RISK + (int(46 * k3),))
+        text(d, (gx + bw / 2, by + 248), "등급에 반영 안 됨", F_TINY, RISK,
+             "ma", a)
+
+    text(d, (W // 2, 1250), "입장권은 훈련으로만 생깁니다", F_MID, INK, "ma",
+         int(255 * ease_out(clamp01((t - 2.5) / .6))))
+
+    k4 = ease_out(clamp01((t - 3.0) / 1.0))
+    if k4 > 0:
+        phone(im, "09_arcade", W // 2, 1580, int(500 * lerp(.94, 1.0, k4)))
+    return fade_out(im, clamp01(t / dur), .93)
+
+
+def scene_more(t, dur):
+    """나머지 기능을 빠르게 훑는다."""
+    im, d = new_frame()
+    a = int(255 * ease_out(clamp01(t / .5)))
+    text(d, (80, 300), "13", F_SMALL, BEAM2, "la", a)
+    text(d, (80, 356), "그 밖에", F_BIG, INK, "la", a)
+    text(d, (80, 452), "들어 있는 것들", F_BIG, INK, "la", a)
+
+    items = ["전국 랭킹 — 가린 이름으로만",
+             "훈련비 가계부 — 월·연 합계",
+             "자세 분석 — 영상은 저장 안 함",
+             "실적표 공유 링크 — 열람 횟수만",
+             "후원 챌린지 — 결제·예치 없음",
+             "테마 7종 — 버튼 모양까지 바뀜"]
+    y = 660
+    for i, s in enumerate(items):
+        k = ease_out(clamp01((t - .5 - i * .22) / .5))
+        if k <= 0:
+            continue
+        a2 = int(255 * k)
+        dx = int(44 * (1 - k))
+        d.rounded_rectangle([80 - dx, y - 18, W - 80 - dx, y + 78],
+                            radius=20, fill=PANEL + (int(a2 * .8),))
+        d.ellipse([116 - dx, y + 22, 132 - dx, y + 38], fill=BEAM2 + (a2,))
+        text(d, (156 - dx, y + 12), s, F_SMALL, INK, "la", a2)
+        y += 116
+
+    text(d, (W // 2, 1480), "전부 핵심 넷을 돕는 것들입니다", F_SMALL, INK2,
+         "ma", int(255 * ease_out(clamp01((t - 2.2) / .6))))
+    return fade_out(im, clamp01(t / dur), .92)
+
+
+def scene_privacy(t, dur):
+    """정보 공개 범위 — 무엇이 누구에게 가는가."""
+    im, d = new_frame()
+    head(d, t, "14", "무엇이 누구에게", "보이는지 적어 둡니다",
+         "선수 대부분이 미성년자입니다")
+
+    rows = [("오늘 훈련했는지", "보임", SAFE, "보임", SAFE),
+            ("키·몸무게·기록", "보임", SAFE, "안 보임", RISK),
+            ("아픈 부위", "보낼 때만", WATCH, "있다/없다", WATCH),
+            ("훈련 일지 내용", "안 보임", RISK, "안 보임", RISK),
+            ("AI 코치 대화", "안 보임", RISK, "안 보임", RISK)]
+
+    x0, y0, rowh = 80, 860, 118
+    a0 = int(255 * ease_out(clamp01((t - .5) / .5)))
+    text(d, (x0 + 24, y0 - 48), "항목", F_TINY, INK3, "la", a0)
+    text(d, (x0 + 560, y0 - 48), "보호자", F_TINY, INK3, "ma", a0)
+    text(d, (x0 + 820, y0 - 48), "감독·코치", F_TINY, INK3, "ma", a0)
+
+    for i, (name, p1, c1, p2, c2) in enumerate(rows):
+        k = ease_out(clamp01((t - .7 - i * .18) / .5))
+        if k <= 0:
+            continue
+        a = int(255 * k)
+        y = y0 + i * rowh
+        d.rounded_rectangle([x0, y, W - x0, y + rowh - 14], radius=18,
+                            fill=PANEL + (int(a * .85),))
+        text(d, (x0 + 24, y + rowh / 2 - 7), name, F_SMALL, INK, "lm", a)
+        text(d, (x0 + 560, y + rowh / 2 - 7), p1, F_SMALL, c1, "mm", a)
+        text(d, (x0 + 820, y + rowh / 2 - 7), p2, F_SMALL, c2, "mm", a)
+
+    text(d, (W // 2, 1580), "기록은 기기에 먼저 저장됩니다", F_MID, INK, "ma",
+         int(255 * ease_out(clamp01((t - 2.4) / .6))))
+    text(d, (W // 2, 1656), "서버로 올리는 것도 아이가 켜야 열립니다", F_SMALL,
+         INK2, "ma", int(255 * ease_out(clamp01((t - 2.7) / .6))))
+    return fade_out(im, clamp01(t / dur), .92)
+
+
 SCENES = [
+    # 왜 만들었나
     (scene_open, 3.2),
     (scene_story, 6.4),
+    # 다치지 않게
     (scene_load, 5.2),
     (scene_pitch, 4.6),
     (scene_growth, 5.2),
+    (scene_recovery, 4.6),
+    # 기록이 남게
     (scene_portfolio, 4.2),
+    (scene_card, 4.2),
+    # 매일 쓰는 것
+    (scene_coach, 4.2),
+    (scene_calendar, 4.0),
     (scene_parent, 4.2),
-    (scene_end, 3.6),
+    (scene_evaluation, 4.4),
+    (scene_report, 4.2),
+    # 오래 쓰게 하는 것
+    (scene_economy, 5.6),
+    (scene_more, 4.8),
+    (scene_privacy, 4.8),
+    (scene_end, 3.8),
 ]
 
 
