@@ -30,6 +30,7 @@ SP = HERE
 # 영상은 파일로 둔다. base64 로 박으면 첫 화면이 8MB 를 넘게 받는다.
 VIDEO = "intro.mp4"
 MANGA = "manga.mp4"
+MANGA_WIDE = "manga_wide.mp4"
 IDX = json.load(io.open(os.path.join(SP, "shots_web", "index.json"),
                         encoding="utf-8"))
 
@@ -410,15 +411,16 @@ HTML = f"""<title>엘리트 루틴 케어</title>
       <div class="stack g16 reveal">
         <div class="film">
           <video controls playsinline preload="metadata"
-                 aria-label="만화로 보는 사용법 40초">
-            <source src="{MANGA}" type="video/mp4">
+                 aria-label="만화로 보는 사용법 56초">
+            <source src="{MANGA_WIDE}" type="video/mp4">
             영상을 재생할 수 없는 환경입니다.
           </video>
         </div>
         <div>
-          <h3>이렇게 사용하세요 · 40초</h3>
+          <h3>이렇게 사용하세요 · 56초</h3>
           <p style="margin-top:8px;font-size:15px;color:var(--ink-2)">
             처음 켜서 종합 리포트까지, 여덟 걸음을 만화로.
+            <a href="{MANGA}" download>세로 버전</a>도 있습니다.
           </p>
         </div>
       </div>
