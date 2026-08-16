@@ -791,10 +791,10 @@ HTML = f"""<title>엘리트 루틴 케어</title>
       <p class="lead reveal">아래는 합성이 아니라 실제 기기에서 찍은 화면입니다.</p>
     </div>
     <div class="cards c4">
-      <div class="reveal"><div class="phone" data-par="0.03" style="width:100%"><img src="{S('05_home_bottom')}" alt="훈련 부하와 개인 최고 기록 카드"></div></div>
-      <div class="reveal" style="animation-delay:.06s"><div class="phone" data-par="0.06" style="width:100%"><img src="{S('13_ranking')}" alt="학부모 화면의 자녀 상태 보고"></div></div>
-      <div class="reveal" style="animation-delay:.12s"><div class="phone" data-par="0.03" style="width:100%"><img src="{S('09_arcade')}" alt="진학 실적표 미리보기"></div></div>
-      <div class="reveal" style="animation-delay:.18s"><div class="phone" data-par="0.06" style="width:100%"><img src="{S('10_more_sheet')}" alt="AI 코치 대화 화면"></div></div>
+      <div class="reveal"><div class="phone" data-par="0.03" style="width:100%"><img src="{S('05_home_bottom')}" alt="홈 아래쪽 — 훈련 부하와 개인 최고 기록 카드"></div></div>
+      <div class="reveal" style="animation-delay:.06s"><div class="phone" data-par="0.06" style="width:100%"><img src="{S('30_parent_today')}" alt="학부모 대시보드 — 자녀의 상태 보고와 아픈 부위"></div></div>
+      <div class="reveal" style="animation-delay:.12s"><div class="phone" data-par="0.03" style="width:100%"><img src="{S('16_portfolio_pdf')}" alt="진학 실적표 미리보기 — A4 한 장으로 나가는 PDF"></div></div>
+      <div class="reveal" style="animation-delay:.18s"><div class="phone" data-par="0.06" style="width:100%"><img src="{S('08_aicoach')}" alt="AI 코치 — 종목에 맞춘 구속 상승 루틴 답변"></div></div>
     </div>
   </div>
 </section>
