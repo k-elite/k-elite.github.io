@@ -63,7 +63,7 @@ CSS = r"""
 
   --safe: #097C42;    /* 라벨 글자로 쓰므로 흰 바탕에서 읽혀야 한다 */
   --watch: #9A6100;
-  --risk: #D83A2E;
+  --risk: #CF3327;   /* 살짝 띄운 바탕(#EDF3FF) 위에서도 4.5 를 넘겨야 한다 */
 
   --sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
     "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
@@ -93,6 +93,13 @@ body {
 
 .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gut); }
 .narrow { max-width: 820px; }
+
+/* 세로로 쌓고 사이를 띄운다. h1·p 의 margin 을 0 으로 둔 대신
+   간격은 전부 여기서 준다 — 안 그러면 제목과 본문이 달라붙는다. */
+.stack { display: flex; flex-direction: column; align-items: stretch; }
+.g8 { gap: 8px; } .g16 { gap: 16px; } .g24 { gap: 24px; }
+.g32 { gap: 32px; } .g40 { gap: 40px; } .g48 { gap: 48px; }
+.stack > * { max-width: 100%; }
 
 h1, h2, h3, h4 { color: var(--ink); margin: 0; text-wrap: balance; }
 h1 {
@@ -150,7 +157,8 @@ section { position: relative; }
 .progress { position: absolute; left: 0; bottom: -1px; height: 3px; background: var(--beam); width: 0; }
 
 /* ── 히어로 ──────────────────────────────────────────── */
-.hero { padding: clamp(140px, 18vw, 210px) 0 clamp(64px, 9vw, 110px); overflow: hidden; }
+.hero { position: relative; padding: clamp(140px, 18vw, 210px) 0 clamp(64px, 9vw, 110px); overflow: hidden; }
+.hero > .wrap { position: relative; z-index: 2; }
 .hero-grid {
   display: grid; grid-template-columns: minmax(0,1.08fr) minmax(0,.92fr);
   gap: clamp(36px, 5vw, 80px); align-items: center;
@@ -384,4 +392,179 @@ footer a:hover { color: var(--beam-2); }
 .fine { font-size: 15px; color: var(--ink-3); line-height: 1.7; }
 
 :focus-visible { outline: 3px solid var(--beam); outline-offset: 3px; border-radius: 6px; }
+
+/* ═══════════════════════════════════════════════════════════
+   브랜드 지면 장치 — 여기부터는 "보여 주기" 위한 것들
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 히어로 배경: 천천히 도는 색 덩어리 + 격자 ──────────── */
+.mesh { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.mesh i { position: absolute; display: block; border-radius: 50%; filter: blur(72px); opacity: .5; }
+.mesh i:nth-child(1) { width: 46vw; height: 46vw; left: -9vw; top: -13vw;
+  background: radial-gradient(circle, #9CC4FF, transparent 66%); animation: blob1 26s ease-in-out infinite alternate; }
+.mesh i:nth-child(2) { width: 38vw; height: 38vw; right: -7vw; top: -7vw;
+  background: radial-gradient(circle, #C7DDFF, transparent 66%); animation: blob2 32s ease-in-out infinite alternate; }
+.mesh i:nth-child(3) { width: 34vw; height: 34vw; left: 42vw; top: 24vw; opacity: .34;
+  background: radial-gradient(circle, #B7F0DA, transparent 66%); animation: blob3 38s ease-in-out infinite alternate; }
+@keyframes blob1 { to { transform: translate3d(7vw, 5vw, 0) scale(1.16); } }
+@keyframes blob2 { to { transform: translate3d(-6vw, 7vw, 0) scale(1.10); } }
+@keyframes blob3 { to { transform: translate3d(-9vw,-6vw, 0) scale(1.20); } }
+
+.grid-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(10,30,70,.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(10,30,70,.055) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(72% 62% at 50% 32%, #000 28%, transparent 76%);
+  -webkit-mask-image: radial-gradient(72% 62% at 50% 32%, #000 28%, transparent 76%);
+}
+
+/* ── 제목이 한 줄씩 밀려 올라온다 ────────────────────── */
+.rise-line { display: block; overflow: hidden; }
+.rise-line > span { display: block; transform: translateY(114%);
+  animation: riseUp .95s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes riseUp { to { transform: none; } }
+
+/* ── 떠 있는 상태 칩 ─────────────────────────────────── */
+.float-chip {
+  position: absolute; z-index: 3; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 18px; padding: 13px 18px;
+  box-shadow: var(--shadow-lg); display: flex; align-items: center; gap: 12px;
+  animation: bob 6s ease-in-out infinite;
+}
+.float-chip .live { width: 10px; height: 10px; border-radius: 50%; background: var(--safe);
+  flex: none; animation: pulse 2.2s infinite; }
+.float-chip b { display: block; color: var(--ink); font-size: 16px; font-weight: 800; letter-spacing: -.02em; }
+.float-chip span { display: block; color: var(--ink-3); font-size: 13px; font-weight: 600; }
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-11px); } }
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(9,124,66,.45); }
+  70%  { box-shadow: 0 0 0 13px rgba(9,124,66,0); }
+  100% { box-shadow: 0 0 0 0 rgba(9,124,66,0); }
+}
+
+/* ── 영상 — 어두운 지면에 크게 하나 ──────────────────── */
+.showreel { background: var(--deep); overflow: hidden; }
+.showreel h2, .showreel h3, .showreel .bigval { color: var(--on-deep); }
+.showreel .lead, .showreel p { color: var(--on-deep-2); }
+.showreel .eyebrow { color: var(--beam-3); }
+.showreel .eyebrow::before { background: var(--beam-3); }
+.reelframe {
+  position: relative; border-radius: 24px; overflow: hidden;
+  border: 1px solid rgba(169,194,232,.22);
+  box-shadow: 0 44px 110px -44px rgba(0,0,0,.75);
+  background: #061B3D;
+}
+.reelframe video { display: block; width: 100%; height: auto; }
+.reel-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.reel-meta span {
+  font-size: 14px; font-weight: 600; padding: 9px 15px; border-radius: 999px;
+  border: 1px solid rgba(169,194,232,.28); color: var(--on-deep-2);
+}
+
+/* ── 기능이 흘러가는 띠 ──────────────────────────────── */
+.marquee {
+  overflow: hidden; border-block: 1px solid var(--rule);
+  background: var(--panel); padding: 24px 0;
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.marquee .track { display: flex; gap: 16px; width: max-content; animation: slide 46s linear infinite; }
+.marquee:hover .track { animation-play-state: paused; }
+.marquee .chip {
+  display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;
+  font-size: 17px; font-weight: 700; color: var(--ink-2);
+  border: 1px solid var(--rule); border-radius: 999px; padding: 12px 22px; background: var(--ground);
+}
+.marquee .chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--beam); flex: none; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* ── 스크롤에 물린 큰 차트 ───────────────────────────── */
+.pin { position: relative; }
+.pin .rail { height: 260vh; }
+.pin .sticky {
+  position: sticky; top: 92px; padding: clamp(24px,4vw,48px) 0;
+  display: grid; grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr);
+  gap: clamp(28px,5vw,72px); align-items: center;
+}
+@media (max-width: 980px) {
+  .pin .rail { height: auto; }
+  .pin .sticky { position: static; grid-template-columns: 1fr; }
+}
+.zone-legend { display: flex; flex-direction: column; gap: 11px; margin-top: 28px; }
+.zone {
+  display: flex; align-items: center; gap: 15px; padding: 15px 18px;
+  border-radius: 15px; border: 1px solid var(--rule); background: var(--panel);
+  opacity: .4; transition: opacity .32s, border-color .32s, transform .32s, box-shadow .32s;
+}
+.zone.on { opacity: 1; border-color: currentColor; transform: translateX(7px); box-shadow: var(--shadow); }
+.zone .sw { width: 13px; height: 36px; border-radius: 5px; flex: none; background: currentColor; }
+.zone b { display: block; font-size: 18px; color: var(--ink); font-weight: 800; letter-spacing: -.02em; }
+.zone span { display: block; font-size: 15px; color: var(--ink-3); }
+.zone.z1 { color: var(--safe); } .zone.z2 { color: var(--watch); } .zone.z3 { color: var(--risk); }
+
+.bigval {
+  font-size: clamp(50px, 8.4vw, 96px); font-weight: 800; letter-spacing: -.06em;
+  line-height: 1; font-variant-numeric: tabular-nums; color: var(--ink);
+}
+.bigval small { font-size: .26em; font-weight: 700; color: var(--ink-3); margin-left: 10px; letter-spacing: -.02em; }
+.showreel .bigval small { color: var(--on-deep-2); }
+
+/* ── 카드에 커서 불빛 ────────────────────────────────── */
+.spot { position: relative; }
+.spot::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: radial-gradient(240px circle at var(--mx,50%) var(--my,0%), rgba(22,104,240,.11), transparent 62%);
+  opacity: 0; transition: opacity .28s; pointer-events: none;
+}
+.spot:hover::after { opacity: 1; }
+
+/* ── 오른쪽 구간 표시 ────────────────────────────────── */
+.dots { position: fixed; right: 20px; top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; gap: 13px; z-index: 60; }
+@media (max-width: 1240px) { .dots { display: none; } }
+.dots a { width: 10px; height: 10px; border-radius: 50%; background: var(--rule-2);
+  transition: background .25s, transform .25s; position: relative; }
+.dots a.on { background: var(--beam); transform: scale(1.5); }
+.dots a::after {
+  content: attr(data-label); position: absolute; right: 22px; top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background: var(--ink); color: #fff; font-size: 13px; font-weight: 600;
+  padding: 6px 12px; border-radius: 8px; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+}
+.dots a:hover::after { opacity: 1; transform: translateY(-50%); }
+
+/* ── 종목 타일 ───────────────────────────────────────── */
+.sports { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 9px; }
+.sports span {
+  padding: 15px 6px; border-radius: 13px; background: var(--panel);
+  border: 1px solid var(--rule); text-align: center;
+  font-size: 15px; font-weight: 700; color: var(--ink-2);
+  opacity: 0; transform: scale(.84);
+}
+.in-view .sports span { animation: tilePop .48s cubic-bezier(.2,1.35,.4,1) forwards; }
+@keyframes tilePop { to { opacity: 1; transform: none; } }
+
+/* ── 히트맵 ──────────────────────────────────────────── */
+.heat { display: grid; grid-template-columns: repeat(14, 1fr); gap: 6px; }
+.heat i { aspect-ratio: 1; border-radius: 5px; display: block; opacity: 0; transform: scale(.5); }
+.in-view .heat i { animation: tilePop .4s cubic-bezier(.2,1.35,.4,1) forwards; }
+.heat-key { display: flex; align-items: center; gap: 9px; margin-top: 18px;
+  font-size: 14px; color: var(--ink-3); font-weight: 600; }
+.heat-key i { width: 15px; height: 15px; border-radius: 4px; display: block; }
+
+/* ── 큰 인용 ─────────────────────────────────────────── */
+.bigquote {
+  font-size: clamp(30px, 4.4vw, 58px); line-height: 1.2; font-weight: 800;
+  letter-spacing: -.045em; color: var(--ink); text-wrap: balance;
+}
+.showreel .bigquote, .plaster .bigquote, .finale .bigquote { color: var(--on-deep); }
+
+@media (prefers-reduced-motion: reduce) {
+  .mesh i, .float-chip, .float-chip .live, .marquee .track { animation: none !important; }
+  .rise-line > span { transform: none; animation: none; }
+  .sports span, .heat i { opacity: 1; transform: none; animation: none; }
+}
 """
