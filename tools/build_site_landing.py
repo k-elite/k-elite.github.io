@@ -12,7 +12,22 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from site_head import CSS  # noqa: E402
 
-SP = os.path.dirname(os.path.abspath(__file__))
+CSS += """
+/* ── 영상 ────────────────────────────────────────────── */
+.filmwrap { display:grid; grid-template-columns: minmax(0,340px) minmax(0,1fr);
+  gap: clamp(28px,5vw,64px); align-items:center; }
+@media (max-width:820px){ .filmwrap{ grid-template-columns:1fr; } }
+.film { position:relative; border-radius:30px; padding:10px;
+  background: linear-gradient(160deg,#26313F,#0E1520);
+  box-shadow: 0 40px 90px -30px #000, 0 0 0 1px var(--rule-2) inset; }
+.film video { display:block; width:100%; border-radius:22px; background:#000; }
+.film-cta { display:flex; gap:10px; flex-wrap:wrap; margin-top:16px; }
+"""
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+SP = HERE
+VIDEO = io.open(os.path.join(SP, "video_b64.txt"), encoding="utf-8").read().strip()
 IDX = json.load(io.open(os.path.join(SP, "shots_web", "index.json"),
                         encoding="utf-8"))
 
@@ -377,6 +392,32 @@ HTML = f"""<title>엘리트 루틴 케어</title>
   </div>
 </section>
 
+<!-- ── 영상 ──────────────────────────────────────────── -->
+<section class="pad" id="film" style="background:var(--ground-2);border-block:1px solid var(--rule)">
+  <div class="wrap filmwrap">
+    <div class="film reveal">
+      <video controls playsinline preload="metadata" poster=""
+             aria-label="엘리트 루틴 케어 소개 영상 37초">
+        <source src="{VIDEO}" type="video/mp4">
+        영상을 재생할 수 없는 환경입니다.
+      </video>
+    </div>
+    <div class="stack g16">
+      <p class="eyebrow reveal">37초 소개</p>
+      <h2 class="reveal">핵심만 담았습니다</h2>
+      <p class="lead reveal">
+        만든 이유부터 훈련 부하, 투구 수, 성장 기록, 진학 실적표까지.
+        나오는 화면은 전부 <b style="color:var(--ink)">실제 앱</b>입니다.
+      </p>
+      <div class="film-cta reveal">
+        <span class="badge">1080 × 1920</span>
+        <span class="badge">세로 · 쇼츠 규격</span>
+        <span class="badge">자막 포함</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── 스토리 ────────────────────────────────────────── -->
 <section class="plaster pad" id="story">
   <div class="wrap story-grid">
@@ -653,7 +694,7 @@ HTML = f"""<title>엘리트 루틴 케어</title>
 </script>
 """
 
-out = r"C:\github\k-elite\index.html"
+out = os.path.join(ROOT, "index.html")
 os.makedirs(os.path.dirname(out), exist_ok=True)
 io.open(out, "w", encoding="utf-8", newline="\n").write(HTML)
 print("wrote", out, os.path.getsize(out) // 1024, "KB")
