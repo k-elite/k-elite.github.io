@@ -1,3 +1,4 @@
 tools/shots_web/
 tools/shots_raw/
+tools/*_b64.txt
 __pycache__/

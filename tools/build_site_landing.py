@@ -27,7 +27,9 @@ CSS += """
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 SP = HERE
-VIDEO = io.open(os.path.join(SP, "video_b64.txt"), encoding="utf-8").read().strip()
+# 영상은 파일로 둔다. base64 로 박으면 첫 화면이 8MB 를 넘게 받는다.
+VIDEO = "intro.mp4"
+MANGA = "manga.mp4"
 IDX = json.load(io.open(os.path.join(SP, "shots_web", "index.json"),
                         encoding="utf-8"))
 
@@ -394,26 +396,47 @@ HTML = f"""<title>엘리트 루틴 케어</title>
 
 <!-- ── 영상 ──────────────────────────────────────────── -->
 <section class="pad" id="film" style="background:var(--ground-2);border-block:1px solid var(--rule)">
-  <div class="wrap filmwrap">
-    <div class="film reveal">
-      <video controls playsinline preload="metadata"
-             aria-label="엘리트 루틴 케어 소개 영상">
-        <source src="{VIDEO}" type="video/mp4">
-        영상을 재생할 수 없는 환경입니다.
-      </video>
-    </div>
-    <div class="stack g16">
-      <p class="eyebrow reveal">78초 소개</p>
-      <h2 class="reveal">기능을 순서대로 보여 드립니다</h2>
+  <div class="wrap stack g48">
+    <div class="stack g16 narrow">
+      <p class="eyebrow reveal">영상으로 보기</p>
+      <h2 class="reveal">두 편으로 정리했습니다</h2>
       <p class="lead reveal">
-        만든 이유부터 훈련 부하, 투구 수, 성장 기록, 회복일, 진학 실적표,
-        AI 코치, 학부모 화면, 지도자 평가, 주간 리포트까지.
         나오는 화면은 전부 <b style="color:var(--ink)">실제 앱</b>입니다.
+        이름·생년월일·학교는 예시 값으로 바꿔 두었습니다.
       </p>
-      <div class="film-cta reveal">
-        <span class="badge">1080 × 1920</span>
-        <span class="badge">세로 · 쇼츠 규격</span>
-        <span class="badge">17개 장면</span>
+    </div>
+
+    <div class="cards c2">
+      <div class="stack g16 reveal">
+        <div class="film">
+          <video controls playsinline preload="metadata"
+                 aria-label="만화로 보는 사용법 40초">
+            <source src="{MANGA}" type="video/mp4">
+            영상을 재생할 수 없는 환경입니다.
+          </video>
+        </div>
+        <div>
+          <h3>이렇게 사용하세요 · 40초</h3>
+          <p style="margin-top:8px;font-size:15px;color:var(--ink-2)">
+            처음 켜서 종합 리포트까지, 여덟 걸음을 만화로.
+          </p>
+        </div>
+      </div>
+
+      <div class="stack g16 reveal" style="animation-delay:.08s">
+        <div class="film">
+          <video controls playsinline preload="metadata"
+                 aria-label="기능 소개 78초">
+            <source src="{VIDEO}" type="video/mp4">
+            영상을 재생할 수 없는 환경입니다.
+          </video>
+        </div>
+        <div>
+          <h3>기능 소개 · 78초</h3>
+          <p style="margin-top:8px;font-size:15px;color:var(--ink-2)">
+            훈련 부하부터 정보 공개 범위까지 17개 장면.
+          </p>
+        </div>
       </div>
     </div>
   </div>
