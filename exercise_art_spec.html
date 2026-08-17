@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>운동 일러스트 작업 지시서 — 엘리트 루틴 케어</title>
+<style>
+@font-face { font-family:"Pretendard"; src:url("fonts/Pretendard-Regular.woff2") format("woff2");
+  font-weight:400; font-display:swap; }
+@font-face { font-family:"Pretendard"; src:url("fonts/Pretendard-SemiBold.woff2") format("woff2");
+  font-weight:600; font-display:swap; }
+@font-face { font-family:"Pretendard"; src:url("fonts/Pretendard-ExtraBold.woff2") format("woff2");
+  font-weight:800; font-display:swap; }
+:root{
+  --ground:#FFFFFF; --panel:#FFFFFF; --panel-2:#EDF3FF; --ground-2:#F3F7FF;
+  --rule:#DEE7F5; --rule-2:#C7D6EE;
+  --ink:#0A1730; --ink-2:#3D4A60; --ink-3:#5F6E86;
+  --beam:#1668F0; --beam-2:#0B4FC0;
+  --warn:#9A6100; --warn-bg:#FFF6E5;
+  --stop:#CF3327; --stop-bg:#FEF2F1;
+  --good:#097C42; --good-bg:#E8F6EE;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+  --sans:"Pretendard",-apple-system,"Malgun Gothic",system-ui,sans-serif;
+  --shadow:0 1px 2px rgba(10,30,70,.05),0 12px 32px rgba(10,30,70,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.page{max-width:1080px;margin:0 auto;padding:0 24px 100px}
+header.top{padding:72px 0 30px;
+  background:radial-gradient(58% 120% at 12% 0%,rgba(90,160,255,.16),transparent 62%);
+  margin:0 -24px 8px;padding-left:24px;padding-right:24px;border-radius:0 0 28px 28px}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.2em;color:var(--beam);
+  font-weight:600;margin:0 0 16px}
+h1{margin:0;font-size:clamp(34px,5.6vw,58px);line-height:1.04;letter-spacing:-.045em;
+  font-weight:800}
+.lede{margin:20px 0 0;max-width:62ch;color:var(--ink-2);font-size:19px}
+section{padding:52px 0 8px;border-bottom:1px solid var(--rule)}
+section:last-of-type{border-bottom:0}
+h2{font-family:var(--mono);font-size:12.5px;letter-spacing:.18em;color:var(--beam);
+  margin:0 0 8px;font-weight:600}
+h3{font-size:clamp(24px,3.4vw,34px);margin:0 0 16px;letter-spacing:-.03em;font-weight:800}
+p{margin:0 0 14px;max-width:70ch;color:var(--ink-2)}
+strong{color:var(--ink);font-weight:700}
+code{font-family:var(--mono);font-size:.9em;background:var(--panel-2);padding:2px 7px;
+  border-radius:6px;color:var(--beam-2)}
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;
+  background:var(--rule);border:1px solid var(--rule);border-radius:18px;overflow:hidden;
+  margin:26px 0 0;box-shadow:var(--shadow)}
+.board div{background:var(--panel);padding:20px}
+.board dt{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-3);
+  margin:0 0 8px}
+.board dd{margin:0;font-size:24px;font-weight:800;letter-spacing:-.03em}
+.note{border-radius:14px;padding:16px 20px;margin:0 0 18px;max-width:74ch}
+.note.warn{background:var(--warn-bg);color:var(--warn)}
+.note.stop{background:var(--stop-bg);color:var(--stop)}
+.note.good{background:var(--good-bg);color:var(--good)}
+.ex{border:1px solid var(--rule);border-radius:20px;padding:24px;margin:0 0 18px;
+  background:var(--panel);box-shadow:var(--shadow)}
+.ex-head{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline}
+.ex-head h4{margin:0;font-size:23px;font-weight:800;letter-spacing:-.02em}
+.pill{font-size:12px;font-weight:800;padding:4px 11px;border-radius:999px;
+  background:var(--panel-2);color:var(--beam-2)}
+.pill.t1{background:#FFE9E7;color:var(--stop)}
+.pill.t2{background:var(--warn-bg);color:var(--warn)}
+.pill.t3{background:var(--panel-2);color:var(--beam-2)}
+.meta{margin:12px 0 0;font-size:14.5px;color:var(--ink-3)}
+.meta b{color:var(--ink-2)}
+.why{margin:14px 0 0;font-size:15.5px;color:var(--ink-2);background:var(--ground-2);
+  padding:14px 16px;border-radius:12px}
+.frames{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;
+  margin:16px 0 0}
+.frame{border:1px solid var(--rule);border-radius:14px;padding:14px;background:var(--ground-2)}
+.frame.wrong{background:var(--stop-bg);border-color:rgba(207,51,39,.25)}
+.frame .fn{font-family:var(--mono);font-size:11.5px;color:var(--beam-2);word-break:break-all}
+.frame .ft{font-size:15px;font-weight:800;margin:6px 0 2px}
+.frame .fa{font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--beam);
+  font-variant-numeric:tabular-nums}
+.frame.wrong .fa{color:var(--stop)}
+.frame .fd{font-size:13px;color:var(--ink-3);line-height:1.55;margin-top:6px}
+table{border-collapse:collapse;width:100%;font-size:16px;margin:8px 0 20px}
+th,td{text-align:left;padding:13px 16px 13px 0;border-bottom:1px solid var(--rule);
+  vertical-align:top;color:var(--ink-2)}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--ink-3);
+  font-weight:600}
+td:first-child{color:var(--ink);font-weight:700;white-space:nowrap}
+ol,ul{max-width:70ch;color:var(--ink-2)}
+li{margin-bottom:8px}
+footer{padding-top:36px;font-size:14px;color:var(--ink-3);font-family:var(--mono)}
+</style></head><body>
+<div class="page">
+
+<header class="top">
+  <p class="eyebrow">일러스트 작업 지시서</p>
+  <h1>운동 21가지,<br>그림 74장</h1>
+  <p class="lede">
+    앱이 카메라로 자세를 보며 횟수를 셉니다. 지금은 막대 도형이 대신
+    움직이고 있는데, 도구를 어떻게 잡는지·손 모양이 어떤지까지는
+    도형으로 보여 줄 수 없습니다. 그 자리를 채울 그림입니다.
+  </p>
+  <div class="board">
+    <div><dt>운동</dt><dd>21가지</dd></div>
+    <div><dt>그림</dt><dd>74장</dd></div>
+    <div><dt>1순위</dt><dd>4가지</dd></div>
+    <div><dt>2순위</dt><dd>7가지</dd></div>
+    <div><dt>3순위</dt><dd>10가지</dd></div>
+  </div>
+</header>
+
+<section>
+  <h2>먼저 읽어 주세요</h2>
+  <h3>각도가 이 일의 전부입니다</h3>
+  <p>
+    보통의 운동 일러스트와 다른 점이 하나 있습니다. 이 그림들은 <strong>앱이
+    실제로 재는 각도와 같아야</strong> 합니다. 앱은 카메라로 관절 각도를
+    재서, 정해진 각도까지 와야 한 개로 셉니다. 그림이 165도로 팔을 펴는데
+    앱이 150도를 정점으로 세면, 아이는 그림대로 했는데 숫자가 안 올라갑니다.
+  </p>
+  <p>
+    그래서 각 그림마다 <strong>몇 도인지</strong>를 적어 두었습니다. 그
+    숫자에 맞춰 주세요. ±5도까지는 괜찮습니다.
+  </p>
+
+  <div class="note warn">
+    <strong>각도를 재는 법</strong> — 관절을 가운데 두고 이어진 두 뼈가
+    이루는 각입니다. 예를 들어 팔꿈치 각도는 <b>어깨—팔꿈치—손목</b> 세 점이
+    이루는 각이고, 팔을 다 폈을 때가 180도에 가깝습니다. 각 운동의
+    ‘강조할 관절’ 칸에 어느 세 점인지 적어 두었습니다.
+  </div>
+
+  <h3 style="margin-top:40px">그림 규격</h3>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><td>크기</td><td>1200 × 1200 px, 정사각. 앱에서 최대 320px로 줄여 씁니다.</td></tr>
+    <tr><td>형식</td><td>PNG, <strong>배경 투명</strong>. 앱 테마가 7가지라
+      배경을 칠하면 어느 테마에선가 튑니다.</td></tr>
+    <tr><td>여백</td><td>인물이 캔버스의 80% 안에 들어오게. 사방 10% 는 비워 주세요.</td></tr>
+    <tr><td>선</td><td>굵기 일정한 라인 아트 + 단색 면. 그라데이션·질감은 빼 주세요.
+      작게 줄이면 지저분해집니다.</td></tr>
+    <tr><td>색</td><td>인물은 <code>#3D4A60</code> 계열 한 가지 톤.
+      <strong>움직이는 관절과 그 관절이 잇는 두 뼈만</strong>
+      <code>#1668F0</code> 으로 강조. 도구(밴드 등)는 <code>#9A6100</code>.</td></tr>
+    <tr><td>틀린 자세</td><td>같은 규격에 강조색만 <code>#CF3327</code> 으로.</td></tr>
+    <tr><td>인물</td><td>초·중등 남녀 어느 쪽으로도 읽히는 중립적인 체형.
+      얼굴은 이목구비 없이 단순하게. <strong>실존 인물을 닮게 그리지 마세요.</strong></td></tr>
+    <tr><td>파일명</td><td>아래 각 카드에 적힌 대로. 예: <code>elbow_band_wrist_curl_peak.png</code></td></tr>
+  </table>
+
+  <div class="note stop">
+    <strong>하지 말아야 할 것</strong> — 실제 선수 사진을 참고해 그대로
+    옮기지 마세요(초상권). 통증을 참는 표정, 무거운 중량, 성인용 보디빌딩
+    자세도 넣지 마세요. 성장기 아이가 따라 하는 그림입니다.
+  </div>
+
+  <h3 style="margin-top:40px">순위</h3>
+  <p>
+    <b>1순위</b>는 아픈 곳이 없을 때 모두에게 뜨는 넷입니다. 이것만 있어도
+    앱이 돌아갑니다. <b>2순위</b>는 야구 아이가 가장 자주 보는 것들,
+    <b>3순위</b>는 나머지 부위입니다. 순위대로 나눠 주셔도 됩니다.
+  </p>
+</section>
+
+<section><h2>14가지</h2><h3>케어 운동</h3>
+<div class="ex">
+  <div class="ex-head">
+    <h4>글루트 브리지</h4>
+    <span class="pill t1">1순위</span>
+    <span class="pill">고관절·허벅지</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>hip_glute_bridge</code> ·
+    <b>분량</b> 15회 × 3세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 고관절 (어깨—골반—무릎)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 엉덩이가 일해야 하체 힘이 상체로 올라온다.<br>
+    <b>동작</b> — 누워서 무릎을 세우고 엉덩이를 들어 올린다.</div>
+  <div class="frames"><div class="frame"><div class="fn">hip_glute_bridge_start.png</div><div class="ft">시작 자세</div><div class="fa">175°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">hip_glute_bridge_mid.png</div><div class="ft">중간</div><div class="fa">148°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">hip_glute_bridge_peak.png</div><div class="ft">정점</div><div class="fa">120°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 2초 버팁니다.</div></div><div class="frame wrong"><div class="fn">hip_glute_bridge_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">허리로 들지 말고 엉덩이를 조여 올립니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">상체와 허벅지가 이루는 각도라 옆에서 봐야 합니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>카프 레이즈</h4>
+    <span class="pill t1">1순위</span>
+    <span class="pill">발목</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>ankle_calf_raise</code> ·
+    <b>분량</b> 20회 × 3세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 무릎 (골반—무릎—발목)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 발목이 버텨야 착지 충격이 무릎과 정강이로 덜 간다.<br>
+    <b>동작</b> — 발끝으로 천천히 올라섰다 더 천천히 내린다.</div>
+  <div class="frames"><div class="frame"><div class="fn">ankle_calf_raise_start.png</div><div class="ft">시작 자세</div><div class="fa">178°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">ankle_calf_raise_mid.png</div><div class="ft">중간</div><div class="fa">173°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">ankle_calf_raise_peak.png</div><div class="ft">정점</div><div class="fa">168°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 1초 버팁니다.</div></div><div class="frame wrong"><div class="fn">ankle_calf_raise_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">내릴 때가 진짜입니다. 세 셀 동안 내려오세요.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">앉는 깊이는 옆에서만 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>Y-T-W 견갑 안정화</h4>
+    <span class="pill t1">1순위</span>
+    <span class="pill">어깨</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>shoulder_ytw</code> ·
+    <b>분량</b> 10회 × 2세트 ·
+    <b>그릴 각도</b> 정면 ·
+    <b>강조할 관절</b> 어깨 (골반—어깨—팔꿈치)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 날개뼈가 제자리를 잡아야 어깨가 안전한 길로 움직인다.<br>
+    <b>동작</b> — 엎드리거나 선 채로 팔을 Y·T·W 모양으로 들어 올린다.</div>
+  <div class="frames"><div class="frame"><div class="fn">shoulder_ytw_start.png</div><div class="ft">시작 자세</div><div class="fa">120°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">shoulder_ytw_mid.png</div><div class="ft">중간</div><div class="fa">70°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">shoulder_ytw_peak.png</div><div class="ft">정점</div><div class="fa">20°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 2초 버팁니다.</div></div><div class="frame wrong"><div class="fn">shoulder_ytw_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">어깨가 귀 쪽으로 솟으면 승모근이 일합니다. 목은 길게.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">팔을 몸에서 벌리는 각도라 앞에서 봐야 벌어진 폭이 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>데드버그</h4>
+    <span class="pill t1">1순위</span>
+    <span class="pill">허리·코어</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>core_dead_bug</code> ·
+    <b>분량</b> 10회 × 3세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 고관절 (어깨—골반—무릎)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 허리를 바닥에 붙인 채 팔다리를 쓰는 법을 몸에 익힌다. 던지고 치는 동작이 전부 여기서 나온다.<br>
+    <b>동작</b> — 누워서 반대쪽 팔과 다리를 천천히 뻗었다 모은다.</div>
+  <div class="frames"><div class="frame"><div class="fn">core_dead_bug_start.png</div><div class="ft">시작 자세</div><div class="fa">160°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">core_dead_bug_mid.png</div><div class="ft">중간</div><div class="fa">125°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">core_dead_bug_peak.png</div><div class="ft">정점</div><div class="fa">90°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 1초 버팁니다.</div></div><div class="frame wrong"><div class="fn">core_dead_bug_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">허리가 바닥에서 뜨면 거기서 멈춥니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">상체와 허벅지가 이루는 각도라 옆에서 봐야 합니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>튜빙 밴드 외회전</h4>
+    <span class="pill t2">2순위</span>
+    <span class="pill">어깨</span>
+    <span class="pill">튜빙 밴드</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>shoulder_external_rotation</code> ·
+    <b>분량</b> 15회 × 3세트 ·
+    <b>그릴 각도</b> 정면 ·
+    <b>강조할 관절</b> 어깨 (골반—어깨—팔꿈치)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 회전근개는 던진 팔을 멈춰 세우는 브레이크다. 브레이크가 약하면 관절이 대신 받는다.<br>
+    <b>동작</b> — 팔꿈치를 옆구리에 붙인 채 아래팔만 바깥으로 연다.</div>
+  <div class="frames"><div class="frame"><div class="fn">shoulder_external_rotation_start.png</div><div class="ft">시작 자세</div><div class="fa">35°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">shoulder_external_rotation_mid.png</div><div class="ft">중간</div><div class="fa">22°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">shoulder_external_rotation_peak.png</div><div class="ft">정점</div><div class="fa">10°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 1초 버팁니다.</div></div><div class="frame wrong"><div class="fn">shoulder_external_rotation_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">팔꿈치가 옆구리에서 떨어지면 등 근육이 대신 합니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">팔을 몸에서 벌리는 각도라 앞에서 봐야 벌어진 폭이 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>슬리퍼 스트레치</h4>
+    <span class="pill t2">2순위</span>
+    <span class="pill">어깨</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>shoulder_sleeper_stretch</code> ·
+    <b>분량</b> 30초 × 3세트 ·
+    <b>그릴 각도</b> 정면 ·
+    <b>강조할 관절</b> 어깨 (골반—어깨—팔꿈치) · <b>한쪽만</b> 쓰는 동작
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 던지는 팔은 안쪽으로 도는 범위가 좁아진다. 그 차이가 커지면 어깨가 상한다.<br>
+    <b>동작</b> — 옆으로 누워 어깨를 90도로 두고 아래팔을 바닥 쪽으로 천천히 누른다.</div>
+  <div class="frames"><div class="frame"><div class="fn">shoulder_sleeper_stretch_hold.png</div><div class="ft">버티는 자세</div><div class="fa">40°</div><div class="fd">이 각도로 30초를 버팁니다. 힘이 들어가는 곳이 보이게 그려 주세요.</div></div><div class="frame wrong"><div class="fn">shoulder_sleeper_stretch_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">아프면 멈춥니다. 늘리는 것이지 참는 것이 아닙니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">팔을 몸에서 벌리는 각도라 앞에서 봐야 벌어진 폭이 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>튜빙 밴드 손목 컬</h4>
+    <span class="pill t2">2순위</span>
+    <span class="pill">팔꿈치</span>
+    <span class="pill">튜빙 밴드</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>elbow_band_wrist_curl</code> ·
+    <b>분량</b> 15회 × 3세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 팔꿈치 (어깨—팔꿈치—손목)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 공을 던질 때 팔꿈치 안쪽을 붙잡아 주는 것은 전완근이다. 여기가 약하면 그 힘이 인대로 넘어간다.<br>
+    <b>동작</b> — 팔꿈치를 무릎에 대고 고정한 뒤, 손목만 위로 감아올린다.</div>
+  <div class="frames"><div class="frame"><div class="fn">elbow_band_wrist_curl_start.png</div><div class="ft">시작 자세</div><div class="fa">165°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">elbow_band_wrist_curl_mid.png</div><div class="ft">중간</div><div class="fa">110°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">elbow_band_wrist_curl_peak.png</div><div class="ft">정점</div><div class="fa">55°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 1초 버팁니다.</div></div><div class="frame wrong"><div class="fn">elbow_band_wrist_curl_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">팔꿈치가 움직이면 전완근이 아니라 어깨가 일합니다. 팔꿈치는 붙여 두세요.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">팔꿈치가 접히는 각도는 옆에서 봐야 보입니다. 정면에서 그리면 팔이 겹쳐 각도가 사라집니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>튜빙 밴드 회내·회외</h4>
+    <span class="pill t2">2순위</span>
+    <span class="pill">팔꿈치</span>
+    <span class="pill">튜빙 밴드</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>elbow_band_pronation</code> ·
+    <b>분량</b> 12회 × 3세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 팔꿈치 (어깨—팔꿈치—손목)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 던지고 난 뒤 팔이 돌아가며 받는 힘을 전완이 나눠 받게 한다.<br>
+    <b>동작</b> — 팔꿈치를 90도로 붙이고 손바닥을 위아래로 천천히 뒤집는다.</div>
+  <div class="frames"><div class="frame"><div class="fn">elbow_band_pronation_start.png</div><div class="ft">시작 자세</div><div class="fa">100°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">elbow_band_pronation_mid.png</div><div class="ft">중간</div><div class="fa">90°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">elbow_band_pronation_peak.png</div><div class="ft">정점</div><div class="fa">80°</div><div class="fd">여기까지 와야 한 개로 셉니다.</div></div><div class="frame wrong"><div class="fn">elbow_band_pronation_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">팔꿈치 각도는 90도 그대로. 어깨가 따라 돌면 안 됩니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">팔꿈치가 접히는 각도는 옆에서 봐야 보입니다. 정면에서 그리면 팔이 겹쳐 각도가 사라집니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>런지 고관절 스트레칭</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">고관절·허벅지</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>hip_lunge_stretch</code> ·
+    <b>분량</b> 30초 × 2세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 고관절 (어깨—골반—무릎) · <b>한쪽만</b> 쓰는 동작
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 고관절이 안 열리면 그만큼 허리가 대신 젖혀진다.<br>
+    <b>동작</b> — 런지 자세에서 골반을 앞으로 밀어 넣는다.</div>
+  <div class="frames"><div class="frame"><div class="fn">hip_lunge_stretch_hold.png</div><div class="ft">버티는 자세</div><div class="fa">100°</div><div class="fd">이 각도로 30초를 버팁니다. 힘이 들어가는 곳이 보이게 그려 주세요.</div></div><div class="frame wrong"><div class="fn">hip_lunge_stretch_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">허리를 젖히지 말고 골반만 밀어 넣습니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">상체와 허벅지가 이루는 각도라 옆에서 봐야 합니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>월 싯</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">무릎</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>knee_wall_sit</code> ·
+    <b>분량</b> 30초 × 3세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 무릎 (골반—무릎—발목)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 무릎 앞을 받쳐 주는 허벅지 앞 근육을 관절에 부담 없이 기른다.<br>
+    <b>동작</b> — 벽에 등을 대고 무릎 90도로 앉은 자세를 버틴다.</div>
+  <div class="frames"><div class="frame"><div class="fn">knee_wall_sit_hold.png</div><div class="ft">버티는 자세</div><div class="fa">90°</div><div class="fd">이 각도로 30초를 버팁니다. 힘이 들어가는 곳이 보이게 그려 주세요.</div></div><div class="frame wrong"><div class="fn">knee_wall_sit_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">무릎이 발끝보다 앞으로 나가면 뒤로 앉습니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">앉는 깊이는 옆에서만 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>스텝 다운</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">무릎</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>knee_step_down</code> ·
+    <b>분량</b> 10회 × 3세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 무릎 (골반—무릎—발목) · <b>한쪽만</b> 쓰는 동작
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 착지할 때 무릎이 안으로 무너지는 습관을 고친다.<br>
+    <b>동작</b> — 한 계단 위에서 반대 발로 천천히 바닥을 짚었다 올라온다.</div>
+  <div class="frames"><div class="frame"><div class="fn">knee_step_down_start.png</div><div class="ft">시작 자세</div><div class="fa">170°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">knee_step_down_mid.png</div><div class="ft">중간</div><div class="fa">138°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">knee_step_down_peak.png</div><div class="ft">정점</div><div class="fa">105°</div><div class="fd">여기까지 와야 한 개로 셉니다.</div></div><div class="frame wrong"><div class="fn">knee_step_down_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">무릎이 안쪽으로 말리면 멈추고 발끝 방향에 맞춥니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">앉는 깊이는 옆에서만 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>손목 신전 강화</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">손목</span>
+    <span class="pill">튜빙 밴드</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>wrist_band_extension</code> ·
+    <b>분량</b> 15회 × 3세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 팔꿈치 (어깨—팔꿈치—손목)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 배트와 공을 잡는 힘이 손목에서 나온다. 약하면 팔꿈치 바깥이 아프다.<br>
+    <b>동작</b> — 팔뚝을 고정하고 손등 쪽으로만 천천히 들어 올린다.</div>
+  <div class="frames"><div class="frame"><div class="fn">wrist_band_extension_start.png</div><div class="ft">시작 자세</div><div class="fa">95°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">wrist_band_extension_mid.png</div><div class="ft">중간</div><div class="fa">90°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">wrist_band_extension_peak.png</div><div class="ft">정점</div><div class="fa">85°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 1초 버팁니다.</div></div><div class="frame wrong"><div class="fn">wrist_band_extension_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">팔뚝은 그대로. 손목만 움직입니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">팔꿈치가 접히는 각도는 옆에서 봐야 보입니다. 정면에서 그리면 팔이 겹쳐 각도가 사라집니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>벽 종아리 스트레칭</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">종아리</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>calf_wall_stretch</code> ·
+    <b>분량</b> 30초 × 3세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 무릎 (골반—무릎—발목) · <b>한쪽만</b> 쓰는 동작
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 종아리가 굳으면 발목이 안 굽고, 그 부담이 정강이로 간다.<br>
+    <b>동작</b> — 벽을 밀며 뒷발 뒤꿈치를 바닥에 붙인다.</div>
+  <div class="frames"><div class="frame"><div class="fn">calf_wall_stretch_hold.png</div><div class="ft">버티는 자세</div><div class="fa">168°</div><div class="fd">이 각도로 30초를 버팁니다. 힘이 들어가는 곳이 보이게 그려 주세요.</div></div><div class="frame wrong"><div class="fn">calf_wall_stretch_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">뒤꿈치가 뜨면 늘어나지 않습니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">앉는 깊이는 옆에서만 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>버드독</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">허리·코어</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>core_bird_dog</code> ·
+    <b>분량</b> 10회 × 3세트 ·
+    <b>그릴 각도</b> 정면 ·
+    <b>강조할 관절</b> 몸통 기울기 (좌우 어깨를 잇는 선)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 몸통이 흔들리지 않게 붙잡는 힘을 기른다.<br>
+    <b>동작</b> — 네발 자세에서 반대쪽 팔다리를 수평까지 뻗는다.</div>
+  <div class="frames"><div class="frame"><div class="fn">core_bird_dog_start.png</div><div class="ft">시작 자세</div><div class="fa">12°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">core_bird_dog_mid.png</div><div class="ft">중간</div><div class="fa">6°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">core_bird_dog_peak.png</div><div class="ft">정점</div><div class="fa">0°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 2초 버팁니다.</div></div><div class="frame wrong"><div class="fn">core_bird_dog_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">골반이 기울면 코어가 아니라 허리가 버티는 중입니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">좌우 어깨가 이루는 기울기라 앞에서 봐야 합니다.</p>
+</div></section><section><h2>7가지</h2><h3>자세 점검</h3>
+<div class="ex">
+  <div class="ex-head">
+    <h4>월 슬라이드 점검</h4>
+    <span class="pill t2">2순위</span>
+    <span class="pill">어깨</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>form_wall_slide</code> ·
+    <b>분량</b> 10회 × 2세트 ·
+    <b>그릴 각도</b> 정면 ·
+    <b>강조할 관절</b> 어깨 (골반—어깨—팔꿈치)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 팔을 머리 위로 올릴 때 날개뼈가 같이 돌아야 한다. 안 돌면 어깨 안에서 힘줄이 끼인다.<br>
+    <b>동작</b> — 벽에 등과 팔을 붙인 채 팔을 위로 밀어 올린다.</div>
+  <div class="frames"><div class="frame"><div class="fn">form_wall_slide_start.png</div><div class="ft">시작 자세</div><div class="fa">150°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">form_wall_slide_mid.png</div><div class="ft">중간</div><div class="fa">90°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">form_wall_slide_peak.png</div><div class="ft">정점</div><div class="fa">30°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 1초 버팁니다.</div></div><div class="frame wrong"><div class="fn">form_wall_slide_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">허리가 벽에서 뜨면 팔이 아니라 허리로 올린 것입니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">팔을 몸에서 벌리는 각도라 앞에서 봐야 벌어진 폭이 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>좌우 회전 범위 비교</h4>
+    <span class="pill t2">2순위</span>
+    <span class="pill">어깨</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>form_rotation_symmetry</code> ·
+    <b>분량</b> 8회 × 2세트 ·
+    <b>그릴 각도</b> 정면 ·
+    <b>강조할 관절</b> 어깨 (골반—어깨—팔꿈치)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 쓰는 팔은 안쪽으로 도는 범위가 줄어든다. 반대쪽과 차이가 커진 것을 미리 알면 그때 늘리면 된다.<br>
+    <b>동작</b> — 두 팔을 90도로 벌리고 아래팔을 뒤로 천천히 젖힌다.</div>
+  <div class="frames"><div class="frame"><div class="fn">form_rotation_symmetry_start.png</div><div class="ft">시작 자세</div><div class="fa">110°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">form_rotation_symmetry_mid.png</div><div class="ft">중간</div><div class="fa">85°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">form_rotation_symmetry_peak.png</div><div class="ft">정점</div><div class="fa">60°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 2초 버팁니다.</div></div><div class="frame wrong"><div class="fn">form_rotation_symmetry_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">두 팔이 같은 높이에 있어야 비교가 됩니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">팔을 몸에서 벌리는 각도라 앞에서 봐야 벌어진 폭이 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>오버헤드 스쿼트 점검</h4>
+    <span class="pill t2">2순위</span>
+    <span class="pill">전신</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>form_overhead_squat</code> ·
+    <b>분량</b> 8회 × 2세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 무릎 (골반—무릎—발목)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 발목·고관절·흉추가 한 번에 드러난다. 어디가 굳었는지 여기서 먼저 보이고, 그 자리가 나중에 아프다.<br>
+    <b>동작</b> — 팔을 머리 위로 뻗은 채 발뒤꿈치를 붙이고 천천히 앉았다 선다.</div>
+  <div class="frames"><div class="frame"><div class="fn">form_overhead_squat_start.png</div><div class="ft">시작 자세</div><div class="fa">172°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">form_overhead_squat_mid.png</div><div class="ft">중간</div><div class="fa">134°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">form_overhead_squat_peak.png</div><div class="ft">정점</div><div class="fa">95°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 1초 버팁니다.</div></div><div class="frame wrong"><div class="fn">form_overhead_squat_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">팔이 앞으로 쏟아지면 흉추가 굳은 것입니다. 거기까지만 앉으세요.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">앉는 깊이는 옆에서만 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>사이드 런지 점검</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">고관절·허벅지</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>form_lateral_lunge</code> ·
+    <b>분량</b> 10회 × 2세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 무릎 (골반—무릎—발목) · <b>한쪽만</b> 쓰는 동작
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 방향을 바꿀 때 옆으로 버티는 힘을 본다. 여기가 약하면 무릎이 안으로 무너진다.<br>
+    <b>동작</b> — 옆으로 크게 디디며 앉았다가 밀어서 돌아온다.</div>
+  <div class="frames"><div class="frame"><div class="fn">form_lateral_lunge_start.png</div><div class="ft">시작 자세</div><div class="fa">172°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">form_lateral_lunge_mid.png</div><div class="ft">중간</div><div class="fa">138°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">form_lateral_lunge_peak.png</div><div class="ft">정점</div><div class="fa">105°</div><div class="fd">여기까지 와야 한 개로 셉니다.</div></div><div class="frame wrong"><div class="fn">form_lateral_lunge_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">무릎이 발끝 안쪽으로 말리면 거기서 멈춥니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">앉는 깊이는 옆에서만 보입니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>외다리 균형 유지</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">전신</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>form_single_leg_balance</code> ·
+    <b>분량</b> 30초 × 2세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 고관절 (어깨—골반—무릎) · <b>한쪽만</b> 쓰는 동작
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 한 발로 서는 힘은 착지와 방향 전환에서 무릎을 지킨다. 좌우 차이가 크면 약한 쪽부터 다친다.<br>
+    <b>동작</b> — 한 발로 서서 반대 무릎을 골반 높이까지 들고 버틴다.</div>
+  <div class="frames"><div class="frame"><div class="fn">form_single_leg_balance_hold.png</div><div class="ft">버티는 자세</div><div class="fa">95°</div><div class="fd">이 각도로 30초를 버팁니다. 힘이 들어가는 곳이 보이게 그려 주세요.</div></div><div class="frame wrong"><div class="fn">form_single_leg_balance_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">골반이 한쪽으로 주저앉으면 거기서 멈춥니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">상체와 허벅지가 이루는 각도라 옆에서 봐야 합니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>흉추 회전 점검</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">전신</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>form_tspine_rotation</code> ·
+    <b>분량</b> 10회 × 2세트 ·
+    <b>그릴 각도</b> 정면 ·
+    <b>강조할 관절</b> 몸통 기울기 (좌우 어깨를 잇는 선) · <b>한쪽만</b> 쓰는 동작
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 등이 안 돌면 그만큼 허리와 어깨가 대신 돈다. 던지고 치고 스윙하는 종목에서 제일 먼저 굳는 곳이다.<br>
+    <b>동작</b> — 무릎 꿇고 한 손을 머리 뒤에 댄 채 가슴을 하늘 쪽으로 연다.</div>
+  <div class="frames"><div class="frame"><div class="fn">form_tspine_rotation_start.png</div><div class="ft">시작 자세</div><div class="fa">34°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">form_tspine_rotation_mid.png</div><div class="ft">중간</div><div class="fa">18°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">form_tspine_rotation_peak.png</div><div class="ft">정점</div><div class="fa">2°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 2초 버팁니다.</div></div><div class="frame wrong"><div class="fn">form_tspine_rotation_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">허리를 젖히지 말고 가슴만 엽니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">좌우 어깨가 이루는 기울기라 앞에서 봐야 합니다.</p>
+</div>
+<div class="ex">
+  <div class="ex-head">
+    <h4>힙 힌지 점검</h4>
+    <span class="pill t3">3순위</span>
+    <span class="pill">허리·코어</span>
+    <span class="pill">없음</span>
+  </div>
+  <div class="meta">
+    <b>파일 접두어</b> <code>form_hip_hinge</code> ·
+    <b>분량</b> 10회 × 2세트 ·
+    <b>그릴 각도</b> 측면 ·
+    <b>강조할 관절</b> 고관절 (어깨—골반—무릎)
+  </div>
+  <div class="why"><b>왜 하는 운동인가</b> — 허리를 굽히는 대신 엉덩이를 접는 법. 이걸 못 하면 모든 하체 훈련이 허리로 간다.<br>
+    <b>동작</b> — 무릎을 살짝 굽힌 채 엉덩이를 뒤로 밀며 상체를 내린다.</div>
+  <div class="frames"><div class="frame"><div class="fn">form_hip_hinge_start.png</div><div class="ft">시작 자세</div><div class="fa">172°</div><div class="fd">동작을 시작하는 자리. 앱에서 0회로 세는 지점입니다.</div></div><div class="frame"><div class="fn">form_hip_hinge_mid.png</div><div class="ft">중간</div><div class="fa">134°</div><div class="fd">두 장만 오가면 뚝뚝 끊깁니다. 가운데 한 장이 있으면 부드럽습니다.</div></div><div class="frame"><div class="fn">form_hip_hinge_peak.png</div><div class="ft">정점</div><div class="fa">95°</div><div class="fd">여기까지 와야 한 개로 셉니다. 정점에서 1초 버팁니다.</div></div><div class="frame wrong"><div class="fn">form_hip_hinge_wrong.png</div><div class="ft">흔한 오류</div><div class="fa">—</div><div class="fd">등이 둥글게 말리면 엉덩이가 아니라 허리가 접힌 것입니다.</div></div></div>
+  <p style="margin:14px 0 0;font-size:14px;color:var(--ink-3)">상체와 허벅지가 이루는 각도라 옆에서 봐야 합니다.</p>
+</div></section>
+
+<section>
+  <h2>납품</h2>
+  <h3>이렇게 주시면 바로 붙입니다</h3>
+  <ol>
+    <li>파일명은 카드에 적힌 그대로. 폴더는 나누지 않아도 됩니다.</li>
+    <li>PNG 원본과 함께, 수정용 원본(AI·SVG·PSD)도 주시면 좋겠습니다.
+      각도를 조금 고칠 일이 생깁니다.</li>
+    <li>1순위 넷을 먼저 주시면 그걸로 앱에 붙여 보고, 크기·강조색이
+      화면에서 어떻게 보이는지 확인한 뒤 나머지를 진행하겠습니다.</li>
+  </ol>
+  <div class="note good">
+    <strong>참고</strong> — 지금 앱에서는 막대 도형이 같은 각도로 움직이고
+    있습니다. 실제 화면에서 어떻게 보이는지 보시려면 앱의 <b>루틴</b> 탭 →
+    운동 카드를 열어 보세요. 그 자리에 이 그림이 들어갑니다.
+  </div>
+</section>
+
+<footer>
+  이 문서는 앱 소스(<code>care_exercise.dart</code>,
+  <code>sport_form.dart</code>)에서 자동으로 만들어집니다.
+  각도가 바뀌면 문서도 함께 바뀝니다 —
+  <code>python tools/build_exercise_art_spec.py</code>
+</footer>
+
+</div></body></html>
